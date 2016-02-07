@@ -1,4 +1,4 @@
-package fr.sio.ecp.federatedbirds.app;
+package fr.sio.ecp.federatedbirds.app.main;
 
 import android.content.Context;
 import android.content.Intent;
@@ -13,6 +13,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import fr.sio.ecp.federatedbirds.R;
+import fr.sio.ecp.federatedbirds.app.settings.SettingsActivity;
+import fr.sio.ecp.federatedbirds.app.users.UsersFollowedFragment;
+import fr.sio.ecp.federatedbirds.app.home.HomeFragment;
+import fr.sio.ecp.federatedbirds.app.login.LoginActivity;
+import fr.sio.ecp.federatedbirds.app.users.UsersFollowersFragment;
 import fr.sio.ecp.federatedbirds.auth.TokenManager;
 
 public class MainActivity extends AppCompatActivity {
@@ -44,16 +49,26 @@ public class MainActivity extends AppCompatActivity {
                         getSupportFragmentManager().beginTransaction()
                                 .replace(R.id.main_container, fragment)
                                 .commit();
+                        ((DrawerLayout) findViewById(R.id.drawer)).closeDrawer(navigationView);
                         return true;
                     case R.id.followed:
-                        fragment = new UserFollowedFragment();
+                        fragment = new UsersFollowedFragment();
                         getSupportFragmentManager().beginTransaction()
                                 .replace(R.id.main_container, fragment)
                                 .commit();
+                        ((DrawerLayout) findViewById(R.id.drawer)).closeDrawer(navigationView);
+                        return true;
+                    case R.id.followers:
+                        fragment = new UsersFollowersFragment();
+                        getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.main_container, fragment)
+                                .commit();
+                        ((DrawerLayout) findViewById(R.id.drawer)).closeDrawer(navigationView);
                         return true;
                     case R.id.settings:
                         Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
                         startActivity(intent);
+                        ((DrawerLayout) findViewById(R.id.drawer)).closeDrawer(navigationView);
                         return true;
                 }
                 ((DrawerLayout) findViewById(R.id.drawer)).closeDrawer(navigationView);

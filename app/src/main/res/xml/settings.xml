@@ -5,4 +5,8 @@
         android:key="logout"
         android:title="@string/logout" />
 
+    <Preference
+        android:key="compte"
+        android:title="@string/compte" />
+
 </PreferenceScreen>

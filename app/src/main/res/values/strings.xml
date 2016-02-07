@@ -12,10 +12,24 @@
     <string name="close_menu">Fermer le menu</string>
     <string name="logout">Déconnexion</string>
     <string name="login_progress">Connexion en cours...</string>
-    <string name="followed">Abonnements</string>
+    <string name="followed">Suivi par...</string>
     <string name="new_message">Nouveau message</string>
     <string name="post">Poster</string>
     <string name="empty_message_error">Message vide non posté.</string>
     <string name="progress">En cours...</string>
     <string name="post_failed">Le post a échoué.</string>
+    <string name="createAccount">Create new account</string>
+    <string name="confirm_password">Confirmer le mot de passe</string>
+    <string name="email">adresse mail</string>
+    <string name="created">création réussie</string>
+    <string name="empty_login_error">login vide</string>
+    <string name="empty_pwd_error">mot de passe vide impossible</string>
+    <string name="empty_email_error">email vide impossible</string>
+    <string name="empty_pwd_not_match_error">mot de passe non confirmé</string>
+    <string name="createMyAccount">create my account</string>
+    <string name="signIn">Sign In</string>
+    <string name="createAccount_inprogress">création du compte en cours...</string>
+    <string name="creation_failed">Echec de la creation de compte</string>
+    <string name="followers">Les abonnés que je suis</string>
+    <string name="compte">Mon Compte</string>
 </resources>

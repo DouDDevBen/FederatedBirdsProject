@@ -1,4 +1,4 @@
-package fr.sio.ecp.federatedbirds.app;
+package fr.sio.ecp.federatedbirds.app.settings;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;

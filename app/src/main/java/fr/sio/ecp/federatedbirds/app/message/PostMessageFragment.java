@@ -1,4 +1,4 @@
-package fr.sio.ecp.federatedbirds.app;
+package fr.sio.ecp.federatedbirds.app.message;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -46,7 +46,7 @@ public class PostMessageFragment extends DialogFragment {
                     public void onClick(DialogInterface dialog, int which) {
 
                         String message = mMessageText.getText().toString();
-                        if (!TextUtils.isEmpty(message)) {
+                        if (TextUtils.isEmpty(message)) {
                             Toast.makeText(getContext(), R.string.empty_message_error, Toast.LENGTH_LONG).show();
                             return;
                         }

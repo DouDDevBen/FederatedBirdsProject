@@ -11,7 +11,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".app.MainActivity"
+        <activity android:name=".app.main.MainActivity"
             android:theme="@style/AppTheme.NoActionBar"
             android:launchMode="singleTop">
             <intent-filter>
@@ -21,9 +21,9 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".app.LoginActivity" />
+        <activity android:name=".app.login.LoginActivity" />
 
-        <activity android:name=".app.SettingsActivity"/>
+        <activity android:name=".app.settings.SettingsActivity"/>
 
     </application>
 

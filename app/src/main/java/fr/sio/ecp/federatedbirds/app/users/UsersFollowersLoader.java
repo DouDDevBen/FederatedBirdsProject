@@ -1,4 +1,4 @@
-package fr.sio.ecp.federatedbirds.app;
+package fr.sio.ecp.federatedbirds.app.users;
 
 import android.content.Context;
 
@@ -9,17 +9,17 @@ import fr.sio.ecp.federatedbirds.ApiClient;
 import fr.sio.ecp.federatedbirds.model.User;
 
 /**
- * Created by Michaël on 30/11/2015.
+ * Created by bensoussan on 05/02/2016.
  */
-public class FollowedLoader extends UsersLoader {
+public class UsersFollowersLoader extends UsersLoader{
 
-    public FollowedLoader(Context context, Long userId) {
+    public UsersFollowersLoader(Context context, Long userId) {
         super(context, userId);
     }
 
     @Override
     protected List<User> getUsers(Long userId) throws IOException {
-        return ApiClient.getInstance(getContext()).getUserFollowed(userId);
+        return ApiClient.getInstance(getContext()).getUserFollowers(userId);
     }
 
 }

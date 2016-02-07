@@ -1,4 +1,4 @@
-package fr.sio.ecp.federatedbirds.app;
+package fr.sio.ecp.federatedbirds.app.message;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -46,6 +46,7 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.Messag
                 .into(holder.mUserAvatarView);
 
         holder.mTextView.setText(message.text);
+
     }
 
     public static class MessageViewHolder extends RecyclerView.ViewHolder {
