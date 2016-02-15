@@ -11,6 +11,9 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import fr.sio.ecp.federatedbirds.R;
 import fr.sio.ecp.federatedbirds.app.settings.SettingsActivity;
@@ -39,6 +42,14 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         final NavigationView navigationView = (NavigationView) findViewById(R.id.navigation);
+
+        View header = navigationView.getHeaderView(0);
+        TextView accountName = (TextView) header.findViewById(R.id.accountName);
+        String accueilAnnonce = "Bonjour " + TokenManager.getUserLogin(getApplicationContext());
+        accountName.setText(accueilAnnonce);
+
+        ImageView accountImage = (ImageView) header.findViewById(R.id.image);
+
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
 
             @Override
@@ -77,6 +88,7 @@ public class MainActivity extends AppCompatActivity {
 
         });
 
+
         if (savedInstanceState == null) {
             HomeFragment fragment = new HomeFragment();
             getSupportFragmentManager().beginTransaction()
@@ -99,6 +111,8 @@ public class MainActivity extends AppCompatActivity {
         );
         mDrawerToggle.syncState();
     }
+
+
 
     @Override
     public void onPostCreate(Bundle savedInstanceState, PersistableBundle persistentState) {

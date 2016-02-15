@@ -7,6 +7,9 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 
+import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
@@ -102,19 +105,20 @@ public class ApiClient {
         return get("users/" + id, User.class);
     }
 
+
+
     public List<User> getUserFollowed(Long userId) throws IOException {
         String id = userId != null ? Long.toString(userId) : "me";
-        //TypeToken<List<Object>> type = new TypeToken<List<Object>>() {};
-        //TypeToken<List<User>> type = new TypeToken<List<User>>() {};
         TypeToken<UsersList> type = new TypeToken<UsersList>() {};
 
+        // Ces parametres seront ajoutés à la requette par la méthode méthod()
+        // pour pousser la réutilisation de code de la connection HTTP déja implémentée.
         HashMap<String, String> parametersToAdd = new HashMap<>() ;
         parametersToAdd.put("limit", limit );
         parametersToAdd.put("continuationToken", continuationToken);
 
         //return get("users", type.getType());
-
-       // List<User> list = get("users/" + id + "/followed", parametersToAdd, type.getType());
+        // List<User> list = get("users/" + id + "/followed", parametersToAdd, type.getType());
         //return list.users;
         //return get("users/" + id + "/followed", type.getType());
         //List<User> users =  (List<User>) list.get(1);
@@ -124,10 +128,12 @@ public class ApiClient {
         return usersList.users;
     }
 
+
     public List<User> getUserFollowers(Long userId) throws IOException {
         String id = userId != null ? Long.toString(userId) : "me";
         TypeToken<UsersList> type = new TypeToken<UsersList>() {};
 
+        // même chose que getUserFollowed()
         HashMap<String, String> parametersToAdd = new HashMap<>() ;
         parametersToAdd.put("limit", limit );
         parametersToAdd.put("continuationToken", continuationToken);
@@ -144,6 +150,7 @@ public class ApiClient {
         return post("auth/token", body, String.class);
     }
 
+    // méthode Post de création de compte
     public String createAccount(String login, String password, String email) throws IOException {
         JsonObject body = new JsonObject();
         body.addProperty("login", login);
@@ -152,13 +159,27 @@ public class ApiClient {
         return post("users", body, String.class);
     }
 
+    // méthode Post de message
     public Message postMessage(String text) throws IOException {
         Message message = new Message();
         message.text = text;
         return post("messages", message, Message.class);
     }
 
-    public static class UsersList {
+    // métohde post pour suivre ou de-suivre un user
+    public User follow(Long id, boolean action) throws IOException {
+        JsonObject body = new JsonObject();
+        if (action) {
+            body.addProperty("followed", "true");
+        } else {
+            body.addProperty("followed", "false");
+        }
+        return post("users/" + id.toString() , body, User.class);
+    }
+
+    // definition d'une classe static comptenant une liste de User et le contiuationToken
+    // afin d'être raccord avec l'implémentation coté serveur qui renvoie en json un objet similaire.
+    private static class UsersList {
         public final List<User> users;
         public final String cursor;
 
@@ -167,5 +188,80 @@ public class ApiClient {
             this.cursor = cursor;
         }
     }
+
+    // A la place de /avatar, le blobstore post par defaut sur /upload coté serveur
+    // j'ai donc gardé cette convention ici.
+    public String getUrlToPost() throws IOException {
+        User u = get("localhost:8080/upload", User.class);
+        // At this stage, le shield "avatar" gets the url path to use in order to save the avatar on the blob store.
+        return u.avatar;
+
+    }
+
+    // Méthode d'upload d'avatar
+    // PARA : String path : url a utiliser pour sauver l'image dans le blobstore.
+    // path est conforme au patern "http://localhost:8080/_ah/upload/xxxxxxxx"
+    // PARA : String img
+    // ici une autre connection HTTP est utilisé (au lieu d'utiliser celle de method() pour plus de simplicité
+    public String uploadAvatar(String img, String path) throws IOException {
+        HttpURLConnection connection = null;
+        DataOutputStream outputStream = null;
+        String pathToOurImage = img;
+
+        String crlf = "\r\n";
+        String twoHyphens = "--";
+        String boundary = "*****";
+        int bytesRead, bytesAvailable, bufferSize;
+        byte[] buffer;
+        int maxBufferSize = 1 * 1024 * 1024;
+
+        URL url = new URL(path);
+        connection = (HttpURLConnection) url.openConnection();
+        FileInputStream fileInputStream = new FileInputStream(new File(pathToOurImage));
+
+        connection.setDoInput(true);
+        connection.setDoOutput(true);
+        connection.setUseCaches(false);
+
+        connection.setRequestMethod("POST");
+        String token = TokenManager.getUserToken(mContext);
+        if (token != null) {
+            connection.addRequestProperty("Authorization", "Bearer " + token);
+        }
+        //connection.setRequestProperty("Connection", "Keep-Alive");
+        connection.setRequestProperty("ENCTYPE", "multipart/form-data");
+        connection.setRequestProperty("Content-Type", "multipart/form-data;boundary=" + boundary);
+
+        outputStream = new DataOutputStream(connection.getOutputStream());
+        outputStream.writeBytes(twoHyphens + boundary + crlf);
+        outputStream.writeBytes("Content-Disposition: form-data; name=\"avatarFile\";filename=\"" + pathToOurImage + "\"" + crlf);
+        outputStream.writeBytes(crlf);
+
+        bytesAvailable = fileInputStream.available();
+        bufferSize = Math.min(bytesAvailable, maxBufferSize);
+        buffer = new byte[bufferSize];
+
+        // Read file
+        bytesRead = fileInputStream.read(buffer, 0, bufferSize);
+
+        while (bytesRead > 0) {
+            outputStream.write(buffer, 0, bufferSize);
+            bytesAvailable = fileInputStream.available();
+            bufferSize = Math.min(bytesAvailable, maxBufferSize);
+            bytesRead = fileInputStream.read(buffer, 0, bufferSize);
+        }
+
+        outputStream.writeBytes(crlf);
+        outputStream.writeBytes(twoHyphens + boundary + twoHyphens + crlf);
+
+        String serverResponseMessage = connection.getResponseMessage();
+        fileInputStream.close();
+        outputStream.flush();
+        outputStream.close();
+
+        return serverResponseMessage;
+
+    }
+
 
 }

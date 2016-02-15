@@ -65,7 +65,8 @@ public class SignInTaskFragment extends LoginTaskFragment {
         @Override
         protected void onPostExecute(String token) {
             if (token != null) {
-                TokenManager.setUserToken(getContext(), token);
+                String login = getArguments().getString("login");
+                TokenManager.setUserToken(getContext(), token, login);
                 getActivity().finish();
                 startActivity(MainActivity.newIntent(getContext()));
             } else {

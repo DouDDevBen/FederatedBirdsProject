@@ -3,6 +3,10 @@
           xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.MANAGE_DOCUMENTS" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
@@ -24,6 +28,10 @@
         <activity android:name=".app.login.LoginActivity" />
 
         <activity android:name=".app.settings.SettingsActivity"/>
+
+        <activity android:name=".app.users.UserDetailsActivity"/>
+
+        <activity android:name=".app.users.AvatarUploadActivity"/>
 
     </application>
 

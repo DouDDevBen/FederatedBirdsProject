@@ -48,6 +48,7 @@ public class HomeFragment extends Fragment
         Toolbar toolbar = (Toolbar) view.findViewById(R.id.toolbar);
         ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
 
+
         RecyclerView listView = (RecyclerView) view.findViewById(R.id.list);
         listView.setLayoutManager(new LinearLayoutManager(getContext()));
         mMessagesAdapter = new MessagesAdapter();

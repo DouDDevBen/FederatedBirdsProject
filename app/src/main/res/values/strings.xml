@@ -32,4 +32,14 @@
     <string name="creation_failed">Echec de la creation de compte</string>
     <string name="followers">Les abonnés que je suis</string>
     <string name="compte">Mon Compte</string>
+    <string name="suivre">suivre</string>
+    <string name="auth_not_autorize">Action non autorisée</string>
+    <string name="desuivre">Ne plus suivre</string>
+    <string name="follow_succeed">User maintenant suivi</string>
+    <string name="unfollowing_succeed">User plus suivi</string>
+    <string name="gallery">gallerie</string>
+    <string name="upload_pict">upload a picture</string>
+    <string name="choose_pict">choisir une photo</string>
+    <string name="upload_failed">upload de l\'image échoué</string>
+    <string name="upload_succeed">upload réussi</string>
 </resources>

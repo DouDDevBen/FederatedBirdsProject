@@ -13,6 +13,7 @@ import android.support.v4.os.AsyncTaskCompat;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -35,7 +36,10 @@ public class PostMessageFragment extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
-        View v = getLayoutInflater(savedInstanceState).inflate(R.layout.post_message, null);
+        // Problème d'acces mémoire avec getLayoutInflater. Utilisation d'un nouveau layoutInflater
+        View v = LayoutInflater.from(getContext()).inflate(R.layout.post_message, null);
+        //View v = getLayoutInflater(savedInstanceState).inflate(R.layout.post_message, null);
+
         mMessageText = (EditText) v.findViewById(R.id.message);
 
         Dialog dialog = new AlertDialog.Builder(getContext())
