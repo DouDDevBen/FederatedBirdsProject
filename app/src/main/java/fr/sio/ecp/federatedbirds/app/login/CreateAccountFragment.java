@@ -64,6 +64,7 @@ public class CreateAccountFragment extends Fragment {
 
     public void create() {
 
+        int i;
         EditText mLoginText = (EditText) getView().findViewById(R.id.username);
         EditText mPassword = (EditText) getView().findViewById(R.id.password);
         //EditText mConfimPassword = (EditText) getView().findViewById(R.id.confirm_password);
